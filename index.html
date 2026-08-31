@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C1 Connectors — B2 Oral Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #063d78;
+  --navy-dark: #082b50;
+  --navy-soft: #315f8c;
+  --red: #ef1f2b;
+  --red-dark: #bd1821;
+  --red-soft: #fff0f0;
+  --cream: #f8f0e2;
+  --cream-light: #fffaf2;
+  --cream-dark: #eadcc5;
+  --paper: #f6f8fb;
+  --white: #ffffff;
+  --ink: #14273c;
+  --muted: #617487;
+  --border: #d8e1e9;
+  --success: #287458;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  font-family: 'Inter', Arial, sans-serif;
+  background: var(--navy-dark);
+  overflow: hidden;
+}
+
+/* ── TOP STRIPE ── */
+.top-stripe {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 5px; z-index: 100;
+  background: linear-gradient(to right, var(--navy-dark) 55%, var(--red) 55%);
+}
+
+/* ── SLIDE CONTAINER ── */
+.deck {
+  position: fixed; inset: 5px 0 0 0;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center;
+  overflow-y: auto;
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s ease;
+  padding: 40px 24px 100px;
+  background: var(--paper);
+}
+.slide.active { opacity: 1; pointer-events: all; }
+
+.content-wrap {
+  width: min(1400px, 100%);
+  margin: 0 auto;
+}
+
+/* ── EYEBROW ── */
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 10px;
+}
+
+/* ── TITLE SLIDE ── */
+#slide-0 {
+  background: var(--white);
+  justify-content: center;
+  padding-top: 0;
+}
+#slide-0 .content-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+.title-badge {
+  display: inline-block;
+  background: var(--cream); border: 1px solid var(--cream-dark);
+  border-radius: 20px; padding: 5px 18px;
+  font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+  color: var(--navy); text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.main-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.2rem, 8vw, 6.5rem);
+  font-weight: 700; line-height: 1;
+  color: var(--navy-dark);
+}
+.main-title span.red { color: var(--red); }
+.title-rule {
+  width: 80px; height: 2px;
+  background: linear-gradient(to right, var(--navy), var(--red));
+  margin: 24px auto;
+}
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem; color: var(--muted); font-weight: 400;
+  max-width: 480px; line-height: 1.6;
+}
+.pill-row {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  justify-content: center; margin-top: 28px;
+}
+.pill {
+  background: var(--navy); color: var(--white);
+  border-radius: 20px; padding: 5px 16px;
+  font-size: .72rem; font-weight: 600; letter-spacing: .06em;
+}
+.pill.alt { background: transparent; border: 1.5px solid var(--red); color: var(--red); }
+
+/* ── SECTION HEADING ── */
+.section-heading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  font-weight: 700; color: var(--navy-dark);
+  margin-bottom: 6px; line-height: 1.1;
+}
+.section-sub {
+  font-size: .95rem; color: var(--muted); margin-bottom: 32px;
+}
+
+/* ── TABLE SLIDE ── */
+.connector-table {
+  width: 100%; border-collapse: collapse;
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 2px 20px rgba(6,61,120,.10);
+  font-size: .9rem;
+}
+.connector-table thead tr {
+  background: var(--navy-dark);
+}
+.connector-table thead th {
+  font-family: 'Inter', sans-serif;
+  font-size: .7rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--white); padding: 14px 20px; text-align: left;
+}
+.connector-table thead th:first-child { width: 30%; }
+.connector-table tbody tr {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.connector-table tbody tr:hover { background: var(--cream-light); }
+.connector-table tbody tr.cat-contrast { background: var(--paper); }
+.connector-table td {
+  padding: 11px 20px;
+  color: var(--ink); line-height: 1.5;
+}
+.connector-table td:first-child {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600; font-size: .88rem;
+}
+.tag {
+  display: inline-block;
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  border-radius: 4px; padding: 2px 8px;
+  margin-right: 8px;
+}
+.tag.contrast  { background: var(--red-soft); color: var(--red-dark); }
+.tag.addition  { background: #e8f0fb; color: var(--navy); }
+.tag.opinion   { background: #f0faf4; color: var(--success); }
+.tag.summary   { background: var(--cream); color: #7a5c20; }
+.tag.disagree  { background: #fff8e8; color: #8a6400; }
+
+/* ── EXAMPLE PARAGRAPH SLIDE ── */
+.example-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--navy);
+  border-radius: 10px;
+  padding: 36px 40px;
+  box-shadow: 0 4px 24px rgba(6,61,120,.08);
+  line-height: 2;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.22rem;
+  color: var(--ink);
+}
+.example-card .kw-navy   { color: var(--navy); font-weight: 700; }
+.example-card .kw-red    { color: var(--red-dark); font-weight: 700; }
+.example-card .kw-green  { color: var(--success); font-weight: 700; }
+
+.legend {
+  display: flex; gap: 24px; flex-wrap: wrap; margin-top: 22px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .82rem; color: var(--muted);
+}
+.legend-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+}
+
+/* ── EXERCISE SHARED ── */
+.ex-header {
+  background: var(--navy-dark); color: var(--white);
+  border-radius: 10px 10px 0 0; padding: 16px 28px;
+  display: flex; align-items: center; gap: 14px;
+}
+.ex-badge {
+  background: var(--red); color: var(--white);
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  border-radius: 4px; padding: 3px 10px;
+}
+.ex-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 600;
+}
+.ex-body {
+  background: var(--cream); border: 1px solid var(--cream-dark);
+  border-top: none; border-radius: 0 0 10px 10px;
+  padding: 28px; margin-bottom: 24px;
+}
+
+/* Multiple choice */
+.mc-question { margin-bottom: 28px; }
+.mc-prompt {
+  font-size: 1rem; font-weight: 600; color: var(--ink);
+  margin-bottom: 12px; line-height: 1.5;
+}
+.mc-options { display: flex; flex-direction: column; gap: 8px; }
+.mc-btn {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 6px; padding: 10px 16px;
+  font-family: 'Inter', sans-serif; font-size: .93rem;
+  color: var(--ink); cursor: pointer; text-align: left;
+  transition: border-color .2s, background .2s;
+}
+.mc-btn:hover { border-color: var(--navy-soft); background: #f0f6ff; }
+.mc-btn.selected-correct {
+  background: #e8f4ee; border-color: var(--success);
+  color: var(--success); font-weight: 600;
+}
+.mc-btn.selected-incorrect {
+  background: var(--red-soft); border-color: var(--red);
+  color: var(--red-dark); font-weight: 600;
+}
+.mc-feedback {
+  font-size: .85rem; margin-top: 8px;
+  padding: 8px 12px; border-radius: 6px; display: none;
+}
+.mc-feedback.show { display: block; }
+.mc-feedback.correct-msg { background: #e8f4ee; color: #245f48; border-left: 4px solid var(--success); }
+.mc-feedback.incorrect-msg { background: var(--red-soft); color: var(--red-dark); border-left: 4px solid var(--red); }
+
+/* Fill-in-blank */
+.fib-sentence {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; line-height: 2.4; color: var(--ink);
+  margin-bottom: 6px;
+}
+.blank-input {
+  border: none; border-bottom: 2.5px solid var(--navy);
+  background: transparent; font-family: 'Inter', sans-serif;
+  font-size: .95rem; color: var(--ink); width: 170px;
+  padding: 2px 6px; outline: none; text-align: center;
+}
+.blank-input:focus { border-bottom-color: var(--red); }
+.blank-input.correct-in { border-bottom-color: var(--success); color: var(--success); font-weight: 600; }
+.blank-input.incorrect-in { border-bottom-color: var(--red); color: var(--red-dark); }
+
+/* Classification drag */
+.classify-pool {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px;
+}
+.classify-chip {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 6px; padding: 8px 16px;
+  font-family: 'Inter', sans-serif; font-size: .88rem;
+  cursor: pointer; transition: background .2s, border-color .2s;
+  user-select: none;
+}
+.classify-chip:hover { border-color: var(--navy-soft); }
+.classify-chip.placed { opacity: .4; pointer-events: none; }
+.classify-columns {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.classify-col {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 8px; min-height: 120px; padding: 14px;
+}
+.classify-col-title {
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.classify-col-title.col-contrast { color: var(--red-dark); }
+.classify-col-title.col-addition { color: var(--navy); }
+.classify-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px; }
+.classify-placed-chip {
+  border-radius: 6px; padding: 6px 14px;
+  font-size: .85rem; font-weight: 500;
+}
+.classify-placed-chip.is-correct { background: #e8f4ee; border: 1.5px solid var(--success); color: var(--success); }
+.classify-placed-chip.is-incorrect { background: var(--red-soft); border: 1.5px solid var(--red); color: var(--red-dark); }
+.classify-placed-chip.is-ungraded { background: var(--cream); border: 1.5px solid var(--cream-dark); color: var(--ink); }
+
+/* Reorder exercise */
+.reorder-list { display: flex; flex-direction: column; gap: 8px; }
+.reorder-item {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 6px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: grab; user-select: none;
+  transition: box-shadow .2s, background .2s;
+  font-size: .93rem; color: var(--ink);
+}
+.reorder-item:active { cursor: grabbing; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+.reorder-item.dragging { opacity: .5; }
+.reorder-item.drag-over { background: var(--cream-light); border-color: var(--navy-soft); }
+.drag-handle { color: var(--muted); font-size: 1rem; }
+.reorder-num {
+  font-weight: 700; font-size: .85rem; color: var(--navy);
+  min-width: 20px;
+}
+.reorder-correct { border-color: var(--success); background: #e8f4ee; }
+.reorder-incorrect { border-color: var(--red); background: var(--red-soft); }
+.reorder-result-msg { font-weight: 600; }
+
+/* Check button */
+.check-btn {
+  background: var(--navy); color: var(--white);
+  border: none; border-radius: 6px; padding: 11px 30px;
+  font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 600;
+  cursor: pointer; margin-top: 18px;
+  transition: background .2s;
+}
+.check-btn:hover { background: var(--navy-soft); }
+.reset-btn {
+  background: transparent; color: var(--muted);
+  border: 1.5px solid var(--border); border-radius: 6px; padding: 11px 22px;
+  font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 500;
+  cursor: pointer; margin-top: 18px; margin-left: 10px;
+  transition: border-color .2s;
+}
+.reset-btn:hover { border-color: var(--navy-soft); color: var(--navy); }
+
+/* score banner */
+.score-banner {
+  border-radius: 8px; padding: 14px 20px;
+  font-weight: 600; font-size: .95rem; margin-top: 14px;
+  display: none;
+}
+.score-banner.show { display: block; }
+.score-banner.pass { background: #e8f4ee; color: var(--success); border-left: 4px solid var(--success); }
+.score-banner.fail { background: var(--red-soft); color: var(--red-dark); border-left: 4px solid var(--red); }
+
+/* ── NAV ── */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--navy-dark);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 32px;
+  z-index: 99;
+}
+.nav-btn {
+  background: var(--navy-soft); color: var(--white);
+  border: none; border-radius: 6px; padding: 9px 22px;
+  font-family: 'Inter', sans-serif; font-size: .88rem; font-weight: 600;
+  cursor: pointer; transition: background .2s;
+}
+.nav-btn:hover { background: var(--navy); }
+.nav-btn:disabled { opacity: .3; cursor: default; }
+.nav-dots { display: flex; gap: 8px; }
+.nav-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,.25); cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.nav-dot.active { background: var(--red); transform: scale(1.35); }
+.nav-counter {
+  font-size: .78rem; color: rgba(255,255,255,.45);
+  font-family: 'Inter', sans-serif; min-width: 60px; text-align: right;
+}
+
+/* responsive */
+@media (max-width: 700px) {
+  .classify-columns { grid-template-columns: 1fr; }
+  .example-card { padding: 24px 18px; font-size: 1.05rem; }
+  .connector-table { font-size: .78rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-stripe"></div>
+<div class="deck" id="deck">
+
+<!-- ════════════════════════════════════════ -->
+<!-- SLIDE 0 — TITLE -->
+<!-- ════════════════════════════════════════ -->
+<div class="slide active" id="slide-0">
+  <div class="content-wrap">
+    <div class="title-badge">B2 Oral Exam Preparation</div>
+    <h1 class="main-title">C1 <span class="red">Connectors</span></h1>
+    <div class="title-rule"></div>
+    <p class="subtitle">Opinion expressions &amp; contrast words to elevate your speaking performance</p>
+    <div class="pill-row">
+      <div class="pill">Contrast</div>
+      <div class="pill">Addition</div>
+      <div class="pill">Opinion</div>
+      <div class="pill">Conclusion</div>
+      <div class="pill alt">B2 → C1</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SLIDE 1 — TABLE -->
+<!-- ════════════════════════════════════════ -->
+<div class="slide" id="slide-1">
+  <div class="content-wrap">
+    <div class="eyebrow">Reference</div>
+    <h2 class="section-heading">Complete Connectors Table</h2>
+    <p class="section-sub">All the connectors, grouped by function</p>
+
+    <table class="connector-table">
+      <thead>
+        <tr>
+          <th>Connector / Expression</th>
+          <th>Category</th>
+          <th>Meaning &amp; Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>However</td><td><span class="tag contrast">Contrast</span></td><td>Sin embargo — introduces a contrast or opposite idea.</td></tr>
+        <tr class="cat-contrast"><td>Nevertheless</td><td><span class="tag contrast">Contrast</span></td><td>No obstante — shows something is true despite a previous point.</td></tr>
+        <tr><td>Nonetheless</td><td><span class="tag contrast">Contrast</span></td><td>A pesar de eso — similar to <em>nevertheless</em>.</td></tr>
+        <tr class="cat-contrast"><td>Despite this</td><td><span class="tag contrast">Contrast</span></td><td>A pesar de esto — introduces contrast.</td></tr>
+        <tr><td>Although</td><td><span class="tag contrast">Contrast</span></td><td>Aunque — introduces a contrasting idea.</td></tr>
+        <tr class="cat-contrast"><td>On the one hand / On the other hand</td><td><span class="tag contrast">Contrast</span></td><td>Por un lado / Por otro lado — introduces both sides of an argument.</td></tr>
+        <tr><td>Furthermore</td><td><span class="tag addition">Addition</span></td><td>Además — adds a stronger supporting idea.</td></tr>
+        <tr class="cat-contrast"><td>Moreover</td><td><span class="tag addition">Addition</span></td><td>Además — adds extra information in a formal way.</td></tr>
+        <tr><td>In addition</td><td><span class="tag addition">Addition</span></td><td>Además — introduces another point.</td></tr>
+        <tr class="cat-contrast"><td>Coupled with this</td><td><span class="tag addition">Addition</span></td><td>Unido a esto — adds another supporting factor.</td></tr>
+        <tr><td>From my perspective</td><td><span class="tag opinion">Opinion</span></td><td>Desde mi perspectiva — introduces a personal opinion.</td></tr>
+        <tr class="cat-contrast"><td>From my standpoint</td><td><span class="tag opinion">Opinion</span></td><td>Desde mi punto de vista — expresses a personal position.</td></tr>
+        <tr><td>From my point of view</td><td><span class="tag opinion">Opinion</span></td><td>Desde mi punto de vista — expresses personal thoughts.</td></tr>
+        <tr class="cat-contrast"><td>I strongly believe that</td><td><span class="tag opinion">Opinion</span></td><td>Creo firmemente que — expresses a strong opinion.</td></tr>
+        <tr><td>I am convinced that</td><td><span class="tag opinion">Opinion</span></td><td>Estoy convencido de que — shows confidence in an opinion.</td></tr>
+        <tr class="cat-contrast"><td>It could be argued that</td><td><span class="tag opinion">Opinion</span></td><td>Se podría argumentar que — introduces a debate.</td></tr>
+        <tr><td>I do not back that up</td><td><span class="tag disagree">Disagree</span></td><td>No apoyo esa idea — expresses disagreement.</td></tr>
+        <tr class="cat-contrast"><td>I beg to differ</td><td><span class="tag disagree">Disagree</span></td><td>No estoy de acuerdo — a polite way to disagree.</td></tr>
+        <tr><td>Therefore</td><td><span class="tag summary">Conclusion</span></td><td>Por lo tanto — introduces a consequence.</td></tr>
+        <tr class="cat-contrast"><td>Consequently</td><td><span class="tag summary">Conclusion</span></td><td>En consecuencia — shows a result.</td></tr>
+        <tr><td>To sum up</td><td><span class="tag summary">Conclusion</span></td><td>En resumen — introduces a conclusion.</td></tr>
+        <tr class="cat-contrast"><td>All things considered</td><td><span class="tag summary">Conclusion</span></td><td>Considerando todo — useful for final conclusions.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SLIDE 2 — EXAMPLE PARAGRAPH -->
+<!-- ════════════════════════════════════════ -->
+<div class="slide" id="slide-2">
+  <div class="content-wrap">
+    <div class="eyebrow">Model Answer</div>
+    <h2 class="section-heading">Speaking Example: Personal Opinion</h2>
+    <p class="section-sub">Notice how connectors are used to build a coherent, high-level argument</p>
+
+    <div class="example-card">
+      <span class="kw-navy">From my perspective</span>, students should study harder and complete their homework because education is one of the most important tools for their future. <span class="kw-navy">I strongly believe</span> that regular study habits help learners become more responsible and independent. <span class="kw-green">Furthermore</span>, doing homework allows students to practise what they have learned in class and improve their weaknesses. <span class="kw-green">Moreover</span>, consistent effort can increase confidence and academic success. <span class="kw-red">However</span>, some people argue that too much homework can create stress and reduce free time. <span class="kw-red">I beg to differ</span> because I believe that a balanced amount of homework is necessary for students' development. <span class="kw-red">Nevertheless</span>, teachers should consider students' needs and avoid giving excessive tasks. <span class="kw-green">Coupled with this</span>, families and schools should encourage students to create good study routines. <span class="kw-navy">All things considered</span>, students who work harder and take their responsibilities seriously have better opportunities to achieve their goals.
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--navy)"></div> Opinion / Conclusion</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--success)"></div> Addition</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Contrast / Disagreement</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SLIDE 3 — EXERCISE 1: Multiple Choice -->
+<!-- ════════════════════════════════════════ -->
+<div class="slide" id="slide-3">
+  <div class="content-wrap">
+    <div class="eyebrow">Exercise 1 of 4</div>
+    <h2 class="section-heading">Choose the Correct Connector</h2>
+    <p class="section-sub">Select the best option to complete each sentence</p>
+
+    <div>
+      <div class="ex-header">
+        <span class="ex-badge">Multiple Choice</span>
+        <span class="ex-title">Pick the right word</span>
+      </div>
+      <div class="ex-body" id="mc-body">
+
+        <div class="mc-question" id="mcq-0">
+          <p class="mc-prompt">1. I enjoy travelling. _______, I find it quite expensive.</p>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="mcAnswer(0,0,'incorrect')">Furthermore</button>
+            <button class="mc-btn" onclick="mcAnswer(0,1,'correct')">However</button>
+            <button class="mc-btn" onclick="mcAnswer(0,2,'incorrect')">Therefore</button>
+            <button class="mc-btn" onclick="mcAnswer(0,3,'incorrect')">Coupled with this</button>
+          </div>
+          <div class="mc-feedback" id="mcf-0"></div>
+        </div>
+
+        <div class="mc-question" id="mcq-1">
+          <p class="mc-prompt">2. The weather was perfect. _______, the hotel was right on the beach.</p>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="mcAnswer(1,0,'incorrect')">Nevertheless</button>
+            <button class="mc-btn" onclick="mcAnswer(1,1,'incorrect')">However</button>
+            <button class="mc-btn" onclick="mcAnswer(1,2,'correct')">Moreover</button>
+            <button class="mc-btn" onclick="mcAnswer(1,3,'incorrect')">Consequently</button>
+          </div>
+          <div class="mc-feedback" id="mcf-1"></div>
+        </div>
+
+        <div class="mc-question" id="mcq-2">
+          <p class="mc-prompt">3. _______, I think online education offers great flexibility for students.</p>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="mcAnswer(2,0,'correct')">From my perspective</button>
+            <button class="mc-btn" onclick="mcAnswer(2,1,'incorrect')">To sum up</button>
+            <button class="mc-btn" onclick="mcAnswer(2,2,'incorrect')">Despite this</button>
+            <button class="mc-btn" onclick="mcAnswer(2,3,'incorrect')">Although</button>
+          </div>
+          <div class="mc-feedback" id="mcf-2"></div>
+        </div>
+
+        <div class="mc-question" id="mcq-3">
+          <p class="mc-prompt">4. She studied all night. _______, she passed the exam with an excellent grade.</p>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="mcAnswer(3,0,'incorrect')">However</button>
+            <button class="mc-btn" onclick="mcAnswer(3,1,'incorrect')">Nevertheless</button>
+            <button class="mc-btn" onclick="mcAnswer(3,2,'correct')">Consequently</button>
+            <button class="mc-btn" onclick="mcAnswer(3,3,'incorrect')">Although</button>
+          </div>
+          <div class="mc-feedback" id="mcf-3"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SLIDE 4 — EXERCISE 2: Fill in the Blank -->
+<!-- ════════════════════════════════════════ -->
+<div class="slide" id="slide-4">
+  <div class="content-wrap">
+    <div class="eyebrow">Exercise 2 of 4</div>
+    <h2 class="section-heading">Fill in the Blank</h2>
+    <p class="section-sub">Type the correct connector from the box below</p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;">
+      <span style="background:var(--navy);color:var(--white);border-radius:5px;padding:5px 14px;font-size:.85rem;font-weight:600;">Furthermore</span>
+      <span style="background:var(--navy);color:var(--white);border-radius:5px;padding:5px 14px;font-size:.85rem;font-weight:600;">Nevertheless</span>
+      <span style="background:var(--navy);color:var(--white);border-radius:5px;padding:5px 14px;font-size:.85rem;font-weight:600;">I strongly believe that</span>
+      <span style="background:var(--navy);color:var(--white);border-radius:5px;padding:5px 14px;font-size:.85rem;font-weight:600;">All things considered</span>
+      <span style="background:var(--navy);color:var(--white);border-radius:5px;padding:5px 14px;font-size:.85rem;font-weight:600;">Coupled with this</span>
+    </div>
+
+    <div class="ex-header">
+      <span class="ex-badge">Fill in Blank</span>
+      <span class="ex-title">Complete the sentences</span>
+    </div>
+    <div class="ex-body">
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="fib-sentence">1. <input class="blank-input" id="fib0" placeholder="..."> , the traffic was terrible; however, we still arrived on time.</div>
+        <div class="fib-sentence">2. Learning a language requires effort. <input class="blank-input" id="fib1" placeholder="..."> , it brings amazing rewards.</div>
+        <div class="fib-sentence">3. <input class="blank-input" id="fib2" placeholder="..."> technology improves our lives in countless ways.</div>
+        <div class="fib-sentence">4. <input class="blank-input" id="fib3" placeholder="..."> , the experience was unforgettable and I would recommend it to everyone.</div>
+        <div class="fib-sentence">5. Regular exercise is essential. <input class="blank-input" id="fib4" placeholder="..."> , a good diet plays a major role in health.</div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <button class="check-btn" onclick="checkFib()">Check Answers</button>
+        <button class="reset-btn" onclick="resetFib()">Reset</button>
+      </div>
+      <div class="score-banner" id="fib-score"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SLIDE 5 — EXERCISE 3: Classify -->
+<!-- ════════════════════════════════════════ -->
+<div class="slide" id="slide-5">
+  <div class="content-wrap">
+    <div class="eyebrow">Exercise 3 of 4</div>
+    <h2 class="section-heading">Classify the Connectors</h2>
+    <p class="section-sub">Click a connector, then click the correct category</p>
+
+    <div class="ex-header">
+      <span class="ex-badge">Classification</span>
+      <span class="ex-title">Contrast or Addition?</span>
+    </div>
+    <div class="ex-body">
+      <div class="classify-pool" id="cl-pool"></div>
+      <div class="classify-columns">
+        <div class="classify-col" id="col-contrast" onclick="classifyDrop('contrast')">
+          <div class="classify-col-title col-contrast">⬤ Contrast</div>
+          <div class="classify-items" id="items-contrast"></div>
+        </div>
+        <div class="classify-col" id="col-addition" onclick="classifyDrop('addition')">
+          <div class="classify-col-title col-addition">⬤ Addition</div>
+          <div class="classify-items" id="items-addition"></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <button class="check-btn" onclick="checkClassify()">Check Answers</button>
+        <button class="reset-btn" onclick="resetClassify()">Reset</button>
+      </div>
+      <div class="score-banner" id="cl-score"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SLIDE 6 — EXERCISE 4: Reorder Paragraph -->
+<!-- ════════════════════════════════════════ -->
+<div class="slide" id="slide-6">
+  <div class="content-wrap">
+    <div class="eyebrow">Exercise 4 of 4</div>
+    <h2 class="section-heading">Put It in Order</h2>
+    <p class="section-sub">Drag the sentences to build a logical paragraph</p>
+
+    <div class="ex-header">
+      <span class="ex-badge">Reorder</span>
+      <span class="ex-title">Build the paragraph</span>
+    </div>
+    <div class="ex-body">
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px;">Drag each sentence to the correct position (1 = first, 5 = last).</p>
+      <div class="reorder-list" id="reorder-list"></div>
+      <div style="display:flex;align-items:center;">
+        <button class="check-btn" onclick="checkReorder()">Check Order</button>
+        <button class="reset-btn" onclick="resetReorder()">Reset</button>
+      </div>
+      <div class="score-banner" id="ro-score"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- ── NAVIGATION ── -->
+<nav class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
+  <div class="nav-dots" id="navDots"></div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-counter" id="navCounter">1 / 7</div>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+  </div>
+</nav>
+
+<script>
+/* ── NAVIGATION ── */
+const TOTAL = 7;
+let cur = 0;
+
+function goTo(n) {
+  document.querySelectorAll('.slide').forEach((s,i)=>{
+    s.classList.toggle('active', i===n);
+    s.scrollTop = 0;
+  });
+  document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+  document.getElementById('prevBtn').disabled = n===0;
+  document.getElementById('nextBtn').disabled = n===TOTAL-1;
+  document.getElementById('navCounter').textContent = (n+1)+' / '+TOTAL;
+  cur = n;
+}
+
+function navigate(dir){ if(cur+dir>=0 && cur+dir<TOTAL) goTo(cur+dir); }
+
+(function buildDots(){
+  const c = document.getElementById('navDots');
+  for(let i=0;i<TOTAL;i++){
+    const d=document.createElement('div');
+    d.className='nav-dot'+(i===0?' active':'');
+    d.onclick=()=>goTo(i);
+    c.appendChild(d);
+  }
+})();
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight') navigate(1);
+  if(e.key==='ArrowLeft') navigate(-1);
+});
+
+/* ── EXERCISE 1: Multiple Choice ── */
+const mcCorrectFeedback = [
+  'Correct! "However" introduces a contrast.',
+  'Correct! "Moreover" adds extra supporting information.',
+  'Correct! "From my perspective" introduces a personal opinion.',
+  'Correct! "Consequently" shows a result or consequence.'
+];
+const mcIncorrectFeedback = [
+  'Not quite. "However" introduces a contrast, not an addition.',
+  'Not quite. "Moreover" adds information rather than contrasting.',
+  'Not quite. "From my perspective" is the opinion expression here.',
+  'Not quite. "Consequently" shows that one thing results from another.'
+];
+
+function mcAnswer(qIdx, btnIdx, type){
+  const q = document.getElementById('mcq-'+qIdx);
+  const btns = q.querySelectorAll('.mc-btn');
+  btns.forEach(b=>{ b.onclick=null; b.style.cursor='default'; });
+  btns[btnIdx].classList.add(type==='correct'?'selected-correct':'selected-incorrect');
+  const fb = document.getElementById('mcf-'+qIdx);
+  fb.textContent = (type==='correct'?'✓ ':'✕ ') + (type==='correct'?mcCorrectFeedback[qIdx]:mcIncorrectFeedback[qIdx]);
+  fb.className = 'mc-feedback show '+(type==='correct'?'correct-msg':'incorrect-msg');
+}
+
+/* ── EXERCISE 2: Fill in Blank ── */
+const fibAnswers = [
+  'nevertheless',
+  'furthermore',
+  'i strongly believe that',
+  'all things considered',
+  'coupled with this'
+];
+
+function checkFib(){
+  let score=0;
+  fibAnswers.forEach((ans,i)=>{
+    const inp=document.getElementById('fib'+i);
+    const val=inp.value.trim().toLowerCase();
+    if(val===ans){ inp.classList.add('correct-in'); score++; }
+    else{ inp.classList.add('incorrect-in'); }
+  });
+  const sb=document.getElementById('fib-score');
+  sb.textContent='You got '+score+' / '+fibAnswers.length+' correct.'+(score===fibAnswers.length?' Excellent work!':' Review the ones in red.');
+  sb.className='score-banner show '+(score>=4?'pass':'fail');
+}
+
+function resetFib(){
+  fibAnswers.forEach((_,i)=>{
+    const inp=document.getElementById('fib'+i);
+    inp.value='';
+    inp.className='blank-input';
+  });
+  const sb=document.getElementById('fib-score');
+  sb.className='score-banner';
+}
+
+/* ── EXERCISE 3: Classify ── */
+const clItems = [
+  { text:'However',     cat:'contrast' },
+  { text:'Furthermore', cat:'addition' },
+  { text:'Nevertheless',cat:'contrast' },
+  { text:'Moreover',    cat:'addition' },
+  { text:'Despite this',cat:'contrast' },
+  { text:'Coupled with this', cat:'addition' },
+  { text:'Although',    cat:'contrast' },
+  { text:'In addition', cat:'addition' }
+];
+let clState = [];
+let selectedChip = null;
+
+function buildClassify(){
+  clState = clItems.map(it=>({ ...it, placedIn:null, isCorrect:null }));
+  const pool=document.getElementById('cl-pool');
+  pool.innerHTML='';
+  ['items-contrast','items-addition'].forEach(id=>document.getElementById(id).innerHTML='');
+  document.getElementById('cl-score').className='score-banner';
+  selectedChip=null;
+
+  // shuffle
+  const shuffled=[...clState].sort(()=>Math.random()-.5);
+  shuffled.forEach((item,i)=>{
+    const chip=document.createElement('div');
+    chip.className='classify-chip';
+    chip.textContent=item.text;
+    chip.dataset.idx=clState.indexOf(item);
+    chip.onclick=()=>selectChip(chip);
+    pool.appendChild(chip);
+  });
+}
+
+function selectChip(chip){
+  if(chip.classList.contains('placed')) return;
+  document.querySelectorAll('.classify-chip').forEach(c=>c.style.outline='');
+  chip.style.outline='2.5px solid var(--navy)';
+  selectedChip=chip;
+}
+
+function classifyDrop(cat){
+  if(!selectedChip) return;
+  const idx=parseInt(selectedChip.dataset.idx);
+  clState[idx].placedIn=cat;
+  selectedChip.classList.add('placed');
+  selectedChip.style.outline='';
+
+  const placed=document.createElement('div');
+  placed.className='classify-placed-chip is-ungraded';
+  placed.textContent=clState[idx].text;
+  placed.dataset.idx=idx;
+  document.getElementById('items-'+cat).appendChild(placed);
+  selectedChip=null;
+}
+
+function checkClassify(){
+  let score=0;
+  document.querySelectorAll('.classify-placed-chip').forEach(chip=>{
+    const idx=parseInt(chip.dataset.idx);
+    clState[idx].isCorrect = (clState[idx].placedIn===clState[idx].cat);
+    chip.className='classify-placed-chip '+(clState[idx].isCorrect?'is-correct':'is-incorrect');
+    if(clState[idx].isCorrect) score++;
+  });
+  const sb=document.getElementById('cl-score');
+  const placed=clState.filter(i=>i.placedIn!==null).length;
+  sb.textContent='You got '+score+' / '+placed+' correct.'+(score===clItems.length?' Perfect!':' Review the ones in red.');
+  sb.className='score-banner show '+(score>=6?'pass':'fail');
+}
+
+function resetClassify(){ buildClassify(); }
+buildClassify();
+
+/* ── EXERCISE 4: Reorder ── */
+const roSentences = [
+  { id:0, text:'From my perspective, social media has changed the way people communicate forever.', correct:1 },
+  { id:1, text:'Furthermore, it allows users to share ideas and connect with others instantly.', correct:2 },
+  { id:2, text:'However, excessive use can lead to anxiety and reduced face-to-face interaction.', correct:3 },
+  { id:3, text:'I strongly believe that a balanced approach is key to using social media wisely.', correct:4 },
+  { id:4, text:'All things considered, the benefits outweigh the drawbacks if used responsibly.', correct:5 },
+];
+let roOrder = [];
+let dragSrcEl = null;
+
+function buildReorder(){
+  roOrder = [...roSentences].sort(()=>Math.random()-.5);
+  const list=document.getElementById('reorder-list');
+  list.innerHTML='';
+  document.getElementById('ro-score').className='score-banner';
+
+  roOrder.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='reorder-item';
+    row.draggable=true;
+    row.dataset.id=item.id;
+    row.innerHTML='<span class="drag-handle">⠿</span><span class="reorder-num">'+(i+1)+'.</span><span>'+item.text+'</span>';
+    row.addEventListener('dragstart',e=>{ dragSrcEl=row; row.classList.add('dragging'); });
+    row.addEventListener('dragend',()=>{ row.classList.remove('dragging'); updateNumbers(); });
+    row.addEventListener('dragover',e=>{ e.preventDefault(); row.classList.add('drag-over'); });
+    row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
+    row.addEventListener('drop',e=>{
+      e.preventDefault(); row.classList.remove('drag-over');
+      if(dragSrcEl!==row){
+        const items=[...list.children];
+        const srcIdx=items.indexOf(dragSrcEl);
+        const tgtIdx=items.indexOf(row);
+        if(srcIdx<tgtIdx) list.insertBefore(dragSrcEl,row.nextSibling);
+        else list.insertBefore(dragSrcEl,row);
+        updateNumbers();
+      }
+    });
+    list.appendChild(row);
+  });
+}
+
+function updateNumbers(){
+  document.querySelectorAll('#reorder-list .reorder-item').forEach((row,i)=>{
+    row.querySelector('.reorder-num').textContent=(i+1)+'.';
+    row.classList.remove('reorder-correct','reorder-incorrect');
+  });
+}
+
+function checkReorder(){
+  let score=0;
+  const rows=[...document.querySelectorAll('#reorder-list .reorder-item')];
+  rows.forEach((row,i)=>{
+    const id=parseInt(row.dataset.id);
+    const item=roSentences.find(s=>s.id===id);
+    const correct=(i+1)===item.correct;
+    row.classList.remove('reorder-correct','reorder-incorrect');
+    row.classList.add(correct?'reorder-correct':'reorder-incorrect');
+    if(correct) score++;
+  });
+  const sb=document.getElementById('ro-score');
+  sb.textContent='You placed '+score+' / '+roSentences.length+' sentences correctly.'+(score===roSentences.length?' Brilliant!':' Try again!');
+  sb.className='score-banner show '+(score>=4?'pass':'fail');
+}
+
+function resetReorder(){ buildReorder(); }
+buildReorder();
+</script>
+</body>
+</html>
