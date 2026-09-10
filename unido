@@ -441,7 +441,7 @@ html, body {
         <tr><td>Furthermore</td><td><span class="tag addition">Addition</span></td><td>Además — adds a stronger supporting idea.</td></tr>
         <tr class="cat-contrast"><td>Moreover</td><td><span class="tag addition">Addition</span></td><td>Además — adds extra information in a formal way.</td></tr>
         <tr><td>In addition</td><td><span class="tag addition">Addition</span></td><td>Además — introduces another point.</td></tr>
-        <tr class="cat-contrast"><td>Coupled with this</td><td><span class="tag addition">Addition</span></td><td>Unido a esto — adds another supporting factor.</td></tr>
+        <tr class="cat-contrast"><td>Coupled with this</td><td><span class="tag addition">Addition</span></td><td>Aunado a esto — adds another supporting factor.</td></tr>
         <tr><td>From my perspective</td><td><span class="tag opinion">Opinion</span></td><td>Desde mi perspectiva — introduces a personal opinion.</td></tr>
         <tr class="cat-contrast"><td>From my standpoint</td><td><span class="tag opinion">Opinion</span></td><td>Desde mi punto de vista — expresses a personal position.</td></tr>
         <tr><td>From my point of view</td><td><span class="tag opinion">Opinion</span></td><td>Desde mi punto de vista — expresses personal thoughts.</td></tr>
